@@ -6,7 +6,7 @@ CFSPMNet: Cross-subject Fourier-guided Spatial-Patch Mamba Network for EEG Motor
 
 ## SPPM & FRSM
 
-![Fameworks](./Fig/Fig_framework.png)
+![Framework](./Fig/Fig_framework.png)
 
 ![Model](./Fig/Fig_SPPM.png)
 
@@ -15,7 +15,7 @@ CFSPMNet: Cross-subject Fourier-guided Spatial-Patch Mamba Network for EEG Motor
 ## Results
 
 The experimental and visualization results are presented below.
-![Results](./Fig/results.png)
+![Results](./Fig/Results.png)
 ![Vis](./Fig/Fig_OverallVis.png)
 
 ## Environment
