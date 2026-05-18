@@ -18,7 +18,6 @@ except ImportError:
     from channel_name_reader import get_channel_names
 
 
-# ---- hemiplegia_canonicalization.py ----
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -211,8 +210,6 @@ def canonicalize_subject_trials(x, y, dataset_name, subject_id, subject_metadata
     meta["label_space"] = {"0": "affected", "1": "unaffected"}
     return canonical_x, canonical_y, meta
 
-
-# ---- target_adaptation_matching.py ----
 def _summarize_matching(probabilities, accepted_mask):
     confidences, _ = torch.max(probabilities, dim=1)
     entropy = -torch.sum(probabilities * torch.log(probabilities + 1e-10), dim=1)
@@ -306,8 +303,6 @@ def apply_sppm_signature_prototype_matching(
     )
     return summary
 
-
-# ---- private_signature_prototypes.py ----
 PRIVATE_SIGNATURE_CHANNEL_GROUPS = {
     "XW": {
         "left": ["FC3", "C3", "CP3"],
@@ -402,7 +397,6 @@ def build_shared_private_signature_prototypes(signature_vectors, labels, num_cla
     return np.stack(shared_prototypes, axis=0), np.asarray(class_wise_matching_tolerance, dtype=np.float32)
 
 
-# ---- reusable SPPM training strategy from train_cfspmnet.py ----
 DEFAULT_XW_SUB_LIST = [2, 5, 8, 9, 11, 12, 14, 17, 21, 23, 24, 26, 27, 28, 30, 32, 33, 37, 38, 43, 44, 47, 49, 50]
 SUMMARY_METRICS = ["Acc", "Kappa", "F1-Score", "Precision", "Recall", "AUC", "Latency(ms)"]
 
