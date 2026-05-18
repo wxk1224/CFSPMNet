@@ -1,5 +1,3 @@
-# Auto-composed single-file SPPM strategy.
-# Naming follows Shared-Private Prototype Matching: private signatures, shared prototypes, and class-wise matching tolerance.
 
 import csv
 from copy import deepcopy
