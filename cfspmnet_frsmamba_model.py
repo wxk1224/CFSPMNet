@@ -1,5 +1,3 @@
-# Auto-composed single-file CFSPMNet model.
-# Internal module names follow the paper narrative: FRSMamba and Fourier rhythmic state modeling.
 
 import math
 
