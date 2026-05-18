@@ -9,8 +9,6 @@ from einops import einsum, rearrange, repeat
 from einops.layers.torch import Rearrange
 from torch import Tensor, nn
 
-
-# ---- model/operations.py ----
 class DepthwiseSeparableTokenFusionConv(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, padding):
         super().__init__()
@@ -27,10 +25,7 @@ class DepthwiseSeparableTokenFusionConv(nn.Module):
     def forward(self, x):
         return self.pointwise(self.depthwise(x))
 
-
-# ---- model/multi_scale_physiological_tokenizer.py ----
 class MultiScalePhysiologicalTokenizer(nn.Module):
-    """Paper module: multi-scale temporal-spatial physiological tokenization."""
 
     def __init__(
         self,
@@ -107,11 +102,7 @@ class MultiScalePhysiologicalTokenizer(nn.Module):
         x = self.embedding_projection(x)
         return x
 
-
-# ---- model/position_encoding.py ----
 class LearnablePositionEncoding(nn.Module):
-    """Paper module: sequence position injection before temporal backbone."""
-
     def __init__(self, embedding, length=100, dropout=0.1):
         super().__init__()
         self.dropout = nn.Dropout(dropout)
@@ -121,8 +112,6 @@ class LearnablePositionEncoding(nn.Module):
         x = x + self.encoding[:, : x.shape[1], :].to(x.device)
         return self.dropout(x)
 
-
-# ---- model/fourier_rhythmic_state_modeling.py ----
 def _init_avg_lowpass(conv: nn.Conv1d):
     kernel_size = conv.kernel_size[0]
     with torch.no_grad():
@@ -131,8 +120,6 @@ def _init_avg_lowpass(conv: nn.Conv1d):
 
 
 class RhythmicTokenStateDecomposition(nn.Module):
-    """Paper module: rhythmic state decomposition into low/high components."""
-
     def __init__(self, emb_size, low_kernel=9):
         super().__init__()
         self.low_pass = nn.Conv1d(
@@ -153,7 +140,6 @@ class RhythmicTokenStateDecomposition(nn.Module):
 
 
 class TimeDomainRhythmicStateModeling(nn.Module):
-    """Legacy time-domain Fourier rhythmic state modeling kept for controlled ablation."""
 
     def __init__(self, emb_size, low_kernels=(5, 9, 13), high_kernels=(3, 5, 7), rhythm_branch_mode="full"):
         super().__init__()
@@ -216,8 +202,6 @@ class TimeDomainRhythmicStateModeling(nn.Module):
 
 
 class FourierRhythmicStateModeling(nn.Module):
-    """FRSMamba Fourier rhythmic state modeling for CFSPMNet token streams."""
-
     def __init__(
         self,
         emb_size,
@@ -325,7 +309,6 @@ class FourierRhythmicStateModeling(nn.Module):
 
 
 class RhythmicStateModelingSwitch(nn.Module):
-    """Switchable Fourier rhythmic state modeling block for controlled tuning and ablation."""
 
     def __init__(
         self,
@@ -365,7 +348,6 @@ class RhythmicStateModelingSwitch(nn.Module):
 
 
 class FourierRhythmicStateModulator(nn.Module):
-    """CFSPMNet module: rhythmic-context-guided token modulation."""
 
     def __init__(self, d_model, d_inner):
         super().__init__()
@@ -379,10 +361,7 @@ class FourierRhythmicStateModulator(nn.Module):
         residual_bias = self.residual_modulator(context)
         return token_scale, residual_bias
 
-
-# ---- model/temporal_encoder.py ----
 class FRSMambaStateSpaceMixer(nn.Module):
-    """CFSPMNet module: state-space temporal mixer."""
 
     def __init__(self, input_channels, use_fourier_rhythmic_modeling=True, rhythm_branch_mode="full"):
         super().__init__()
@@ -465,7 +444,6 @@ class FRSMambaStateSpaceMixer(nn.Module):
 
 
 class FRSMambaBlock(nn.Module):
-    """CFSPMNet module: Fourier rhythmic state modeling + guided temporal encoding."""
 
     def __init__(
         self,
@@ -529,8 +507,6 @@ class FRSMambaBlock(nn.Module):
             "block_output": residual_out,
         }
 
-
-# ---- model/prediction_head.py ----
 class PredictionHead(nn.Sequential):
     """Paper module: final decision head."""
 
@@ -541,17 +517,8 @@ class PredictionHead(nn.Sequential):
     def forward(self, x):
         return self.fc(x)
 
-
-# ---- model/cfspmnet_model.py ----
 class CFSPMNet(nn.Module):
-    """
-    Top-level CFSPMNet model arranged to match the paper figure hierarchy:
-    1. Physiological tokenization
-    2. Positional encoding
-    3. Rhythmic-state-aware temporal encoder
-    4. Prediction head
-    """
-
+   
     def __init__(
         self,
         emb_size=64,
